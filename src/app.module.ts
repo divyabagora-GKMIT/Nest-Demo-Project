@@ -9,7 +9,6 @@ import { DatabaseModule } from './database/database.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    DatabaseModule,
     EmployeeModule,
     DepartmentModule,
     DatabaseModule,
