@@ -54,5 +54,11 @@ pids
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
-package-lock.json
-.vscode
+
+
+.idea/
+.vscode/
+node_modules/
+build/
+tmp/
+temp/
