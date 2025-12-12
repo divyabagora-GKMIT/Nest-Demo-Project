@@ -8,6 +8,7 @@ export class Department {
 
   @Column({
     nullable: false,
+    unique: true
   })
   name: string;
 

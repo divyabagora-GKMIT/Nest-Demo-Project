@@ -1,4 +1,5 @@
 import {
+  Check,
   Column,
   Entity,
   JoinColumn,
@@ -10,6 +11,7 @@ import { Department } from '../../department/entities/department.entity';
 
 @Entity()
 @Unique(['email', 'deleted_at'])
+@Check(`"salary" >= 0`)
 export class Employee {
   @PrimaryGeneratedColumn()
   id: number;
