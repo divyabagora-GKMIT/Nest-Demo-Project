@@ -40,7 +40,7 @@ export class EmployeeService {
 
     const createdEmployee = this.employeeRepository.create({
       ...rest,
-      department: departmentId ? ({ id: departmentId }) : null,
+      department: departmentId ? { id: departmentId } : null,
     });
 
     const saved = await this.employeeRepository.save(createdEmployee);
@@ -57,21 +57,44 @@ export class EmployeeService {
 
   async findOne(id: number) {
     const employeeExist = await this.employeeRepository.findOne({
-      where: {id}
-    })
+      where: { id },
+    });
 
-    if (!employeeExist){
-      throw new NotFoundException('Emplopyee not found')
+    if (!employeeExist) {
+      throw new NotFoundException('Emplopyee not found');
     }
 
     return employeeExist;
   }
 
-  update(id: number, updateEmployeeDto: UpdateEmployeeDto) {
-    return `This action updates a #${id} employee`;
+  async update(id: number, updateEmployeeDto: UpdateEmployeeDto) {
+    const employeeExist = await this.employeeRepository.findOne({
+      where: { id },
+    });
+
+    if (!employeeExist) {
+      throw new NotFoundException('Emplopyee not found');
+    }
+
+    const updatedEmployee = this.employeeRepository.merge(
+      employeeExist,
+      updateEmployeeDto,
+    );
+    await this.employeeRepository.save(updatedEmployee);
+    return;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} employee`;
+  async remove(id: number) {
+    const employeeExist = await this.employeeRepository.findOne({
+      where: { id },
+    });
+
+    if (!employeeExist) {
+      throw new NotFoundException('Emplopyee not found');
+    }
+
+    await this.employeeRepository.softDelete(id);
+
+    return;
   }
 }
