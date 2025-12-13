@@ -6,7 +6,7 @@ import {
   Patch,
   Param,
   Delete,
-  ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
@@ -27,8 +27,14 @@ export class EmployeeController {
   }
 
   @Get()
-  async findAll() {
-    const result = await this.employeeService.findAll();
+  async findAll(@Query('include') include ?: string) {
+    let result = null;
+    if (include){
+      result = await this.employeeService.findAllWithDepartment();
+    }
+    else {
+      result = await this.employeeService.findAll();
+    }
     return {
       message: 'Employee fetched Successfully',
       data: result,
@@ -43,6 +49,15 @@ export class EmployeeController {
       message: 'Employee fetched Successfully',
       data: result,
     };
+  }
+
+  @Get('department/:id')
+  async findAllEmployees (@Param('id' , new IdValidationPipe()) id : number){
+    const result = await this.employeeService.findAllEmployees(id);
+    return {
+      message : "All employees in a department fetch successfully",
+      data : result
+    }
   }
 
   @Patch(':id')

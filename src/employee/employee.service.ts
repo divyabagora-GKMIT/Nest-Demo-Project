@@ -48,10 +48,15 @@ export class EmployeeService {
     return saved;
   }
 
-  async findAll() {
+  async findAllWithDepartment() {
     const employees = await this.employeeRepository.find({
       relations: ['department'],
     });
+    return employees;
+  }
+
+  async findAll (){
+    const employees = await this.employeeRepository.find();
     return employees;
   }
 
@@ -67,6 +72,22 @@ export class EmployeeService {
     return employeeExist;
   }
 
+  async findAllEmployees(id : number) {
+    const departmentExist = await this.departmentRepository.findOne({
+      where: {id}
+    });
+
+    if (!departmentExist){
+      throw new NotFoundException("Department not exist");
+    }
+
+    const employees = await this.employeeRepository.find({
+      where : {department : {id : id}}
+    })
+
+    return employees;
+  }
+
   async update(id: number, updateEmployeeDto: UpdateEmployeeDto) {
     const employeeExist = await this.employeeRepository.findOne({
       where: { id },
@@ -74,13 +95,9 @@ export class EmployeeService {
 
     if (!employeeExist) {
       throw new NotFoundException('Emplopyee not found');
-    }
+    } 
 
-    const updatedEmployee = this.employeeRepository.merge(
-      employeeExist,
-      updateEmployeeDto,
-    );
-    await this.employeeRepository.save(updatedEmployee);
+    await this.employeeRepository.update(id , updateEmployeeDto);
     return;
   }
 

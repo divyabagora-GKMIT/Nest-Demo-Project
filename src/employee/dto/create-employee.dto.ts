@@ -5,17 +5,21 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  Length,
   Max,
+  MaxLength,
   Min,
 } from 'class-validator';
 
 export class CreateEmployeeDto {
   @IsString({ message: 'Name must be a string' })
   @IsNotEmpty({ message: 'Name is required' })
+  @Length(3, 20, { message: 'Name must be between 3 and 20 characters' })
   name: string;
 
   @IsNotEmpty({ message: 'email is required' })
   @IsEmail()
+  @MaxLength(254)
   email: string;
 
   @Type(() => Number)
@@ -24,8 +28,8 @@ export class CreateEmployeeDto {
   salary: number;
 
   @IsOptional()
-  @Min(1, { message: 'departmentId must be at least 1' })
-  @Max(4, { message: 'departmentId cannot be more than 4' })
+  // @Min(1, { message: 'departmentId must be at least 1' })
+  // @Max(4, { message: 'departmentId cannot be more than 4' })
   @IsNumber({}, { message: 'departmentId must be a number' })
   departmentId: number;
 }
