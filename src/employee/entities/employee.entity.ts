@@ -1,6 +1,7 @@
 import {
   Check,
   Column,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -57,11 +58,11 @@ export class Employee {
   })
   updatedAt: Date;
 
-  @Column({
+  @Exclude()
+  @DeleteDateColumn({
     name: 'deleted_at',
     nullable: true,
     type: 'timestamp',
   })
-  @Exclude()
   deletedAt: Date;
 }
