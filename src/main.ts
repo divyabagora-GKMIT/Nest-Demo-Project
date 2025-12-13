@@ -13,7 +13,7 @@ async function bootstrap() {
       validationError: { target: false },
     }),
   );
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector))) // for removing deleted_at
   await app.listen(process.env.PORT ?? 8080);
 }
 bootstrap();

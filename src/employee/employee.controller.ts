@@ -12,6 +12,7 @@ import { EmployeeService } from './employee.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { IdValidationPipe } from '../pipes/idValidation.pipe';
+import { EmployeeQueryDto } from './dto/employee-query-dto';
 
 @Controller('employees')
 export class EmployeeController {
@@ -27,14 +28,14 @@ export class EmployeeController {
   }
 
   @Get()
-  async findAll(@Query('include') include ?: string) {
-    let result = null;
-    if (include){
-      result = await this.employeeService.findAllWithDepartment();
-    }
-    else {
-      result = await this.employeeService.findAll();
-    }
+  async findAll(@Query() query : EmployeeQueryDto  ) {
+    const { include, limit, page } = query;
+
+    const result = await this.employeeService.findAll(
+      include,
+      Number(limit),
+      Number(page)
+    );
     return {
       message: 'Employee fetched Successfully',
       data: result,
@@ -52,12 +53,12 @@ export class EmployeeController {
   }
 
   @Get('department/:id')
-  async findAllEmployees (@Param('id' , new IdValidationPipe()) id : number){
+  async findAllEmployees(@Param('id', new IdValidationPipe()) id: number) {
     const result = await this.employeeService.findAllEmployees(id);
     return {
-      message : "All employees in a department fetch successfully",
-      data : result
-    }
+      message: 'All employees in a department fetch successfully',
+      data: result,
+    };
   }
 
   @Patch(':id')
