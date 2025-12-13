@@ -1,6 +1,7 @@
 import {
   Check,
   Column,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -8,9 +9,10 @@ import {
   Unique,
 } from 'typeorm';
 import { Department } from '../../department/entities/department.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
-@Unique(['email', 'deleted_at'])
+@Unique(['email', 'deletedAt'])
 @Check(`"salary" >= 0`)
 export class Employee {
   @PrimaryGeneratedColumn()
@@ -26,32 +28,41 @@ export class Employee {
   })
   name: string;
 
-  @Column()
+  @Column({
+    type: 'decimal',
+    precision: 10,
+    scale: 2,
+    nullable: true,
+  })
   salary: number;
 
   @ManyToOne(() => Department, (department) => department.employees, {
-    onDelete: 'SET NULL', 
+    onDelete: 'SET NULL',
     onUpdate: 'CASCADE',
   })
   @JoinColumn({ name: 'department_id' })
   department: Department;
 
   @Column({
+    name: 'created_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  created_at: Date;
+  createdAt: Date;
 
   @Column({
+    name: 'updated_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
     onUpdate: 'CURRENT_TIMESTAMP',
   })
-  updated_at: Date;
+  updatedAt: Date;
 
-  @Column({
+  @Exclude()
+  @DeleteDateColumn({
+    name: 'deleted_at',
     nullable: true,
     type: 'timestamp',
   })
-  deleted_at: Date;
+  deletedAt: Date;
 }

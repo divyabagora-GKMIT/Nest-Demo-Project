@@ -1,5 +1,13 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Employee } from '../../employee/entities/employee.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Department {
@@ -8,7 +16,7 @@ export class Department {
 
   @Column({
     nullable: false,
-    unique: true
+    unique: true,
   })
   name: string;
 
@@ -16,21 +24,25 @@ export class Department {
   employees: Employee[];
 
   @Column({
+    name: 'created_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  created_at: Date;
+  createdAt: Date;
 
   @Column({
+    name: 'updated_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
     onUpdate: 'CURRENT_TIMESTAMP',
   })
-  updated_at: Date;
+  updatedAt: Date;
 
-  @Column({
-    nullable: true,
+  @Exclude()
+  @DeleteDateColumn({
+    name: 'deleted_at',
     type: 'timestamp',
+    nullable: true,
   })
-  deleted_at: Date;
+  deletedAt: Date;
 }
