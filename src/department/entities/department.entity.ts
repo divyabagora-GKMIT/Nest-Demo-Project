@@ -1,5 +1,6 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Employee } from '../../employee/entities/employee.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Department {
@@ -32,5 +33,6 @@ export class Department {
     nullable: true,
     type: 'timestamp',
   })
+  @Exclude()
   deleted_at: Date;
 }

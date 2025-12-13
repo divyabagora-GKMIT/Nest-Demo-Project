@@ -42,9 +42,6 @@ export class Employee {
   @JoinColumn({ name: 'department_id' })
   department: Department;
 
-  @Column({ name: 'department_id' , nullable: true })
-  readonly departmentId: number;
-
   @Column({
     name: 'created_at',
     type: 'timestamp',
