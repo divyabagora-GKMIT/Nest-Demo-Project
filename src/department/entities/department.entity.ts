@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Employee } from '../../employee/entities/employee.entity';
 import { Exclude } from 'class-transformer';
+import { Length } from 'class-validator';
 
 @Entity()
 export class Department {
@@ -18,6 +19,7 @@ export class Department {
   @Column({
     nullable: false,
     unique: true,
+    length: 30
   })
   name: string;
 

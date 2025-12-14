@@ -18,13 +18,14 @@ export class CreateEmployeeDto {
   name: string;
 
   @IsNotEmpty({ message: 'email is required' })
-  @IsEmail()
+  @IsEmail({}, {message : 'email format is not correct'})
   @MaxLength(254)
   email: string;
 
   @Type(() => Number)
   @IsNumber({}, { message: 'salary must be a number' })
   @Min(0, { message: 'salary must be non-negative' })
+  @Max(99999999.99, { message: 'salary cannot exceed 10 digits' })
   salary: number;
 
   @IsOptional()
