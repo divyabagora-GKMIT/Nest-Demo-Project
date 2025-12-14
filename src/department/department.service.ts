@@ -29,5 +29,5 @@ export class DepartmentService {
 
     return result.employees;
   }
-  
+
 }
