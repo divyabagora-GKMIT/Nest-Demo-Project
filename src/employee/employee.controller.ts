@@ -21,41 +21,47 @@ export class EmployeeController {
   async create(@Body() createEmployeeDto: CreateEmployeeDto) {
     const result = await this.employeeService.create(createEmployeeDto);
     return {
-      message : "User created successfully",
-      data: result
-    }
+      message: 'User created successfully',
+      data: result,
+    };
   }
 
   @Get()
   async findAll() {
-      const result = await this.employeeService.findAll();
-      return {
-        message : "Employee fetched Successfully",
-        data : result
-      }
+    const result = await this.employeeService.findAll();
+    return {
+      message: 'Employee fetched Successfully',
+      data: result,
+    };
   }
 
   @Get(':id')
-  async findOne(@Param('id', new IdValidationPipe()) id: number ) {
-    const result =  await this.employeeService.findOne(id); 
+  async findOne(@Param('id', new IdValidationPipe()) id: number) {
+    const result = await this.employeeService.findOne(id);
 
     return {
-      message : "Employee fetched Successfully",
-      data: result
-    }
-
+      message: 'Employee fetched Successfully',
+      data: result,
+    };
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
+  async update(
+    @Param('id', new IdValidationPipe()) id: number,
     @Body() updateEmployeeDto: UpdateEmployeeDto,
   ) {
-    return this.employeeService.update(+id, updateEmployeeDto);
+    await this.employeeService.update(id, updateEmployeeDto);
+
+    return {
+      message: 'Employee Updated successfully',
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.employeeService.remove(+id);
+  remove(@Param('id', new IdValidationPipe()) id: number) {
+    this.employeeService.remove(id);
+    return {
+      message: 'Employee deleted successfully',
+    };
   }
 }
