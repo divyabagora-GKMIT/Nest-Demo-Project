@@ -52,15 +52,6 @@ export class EmployeeController {
     };
   }
 
-  @Get('department/:id')
-  async findAllEmployees(@Param('id', new IdValidationPipe()) id: number) {
-    const result = await this.employeeService.findAllEmployees(id);
-    return {
-      message: 'All employees in a department fetch successfully',
-      data: result,
-    };
-  }
-
   @Patch(':id')
   async update(
     @Param('id', new IdValidationPipe()) id: number,
