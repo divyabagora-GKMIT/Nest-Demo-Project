@@ -8,9 +8,7 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true,
-      transform: true,
-      transformOptions: { enableImplicitConversion: true },
-      validationError: { target: false },
+      transform: true
     }),
   );
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector))) // for removing deleted_at

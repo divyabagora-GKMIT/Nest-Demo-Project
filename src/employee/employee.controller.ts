@@ -74,8 +74,8 @@ export class EmployeeController {
   }
 
   @Delete(':id')
-  remove(@Param('id', new IdValidationPipe()) id: number) {
-    this.employeeService.remove(id);
+  async remove(@Param('id', new IdValidationPipe()) id: number) {
+    await this.employeeService.remove(id);
     return {
       message: 'Employee deleted successfully',
     };

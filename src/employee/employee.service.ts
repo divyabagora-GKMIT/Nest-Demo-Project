@@ -115,6 +115,7 @@ export class EmployeeService {
     const employeeExist = await this.employeeRepository.findOne({
       where: { id },
     });
+    console.log(employeeExist);
 
     if (!employeeExist) {
       throw new NotFoundException('Emplopyee not found');
