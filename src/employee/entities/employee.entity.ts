@@ -21,11 +21,13 @@ export class Employee {
 
   @Column({
     nullable: false,
+    length: 254
   })
   email: string;
 
   @Column({
     nullable: false,
+    length: 20
   })
   name: string;
 

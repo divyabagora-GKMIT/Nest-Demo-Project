@@ -48,12 +48,27 @@ export class EmployeeService {
     return saved;
   }
 
-  async findAll() {
-    const employees = await this.employeeRepository.find({
-      relations: ['department'],
+  async findAll(
+    include: boolean,
+    limit :number,
+    page : number,
+    sort: keyof Employee = 'createdAt',
+    order: 'ASC' | 'DESC' = 'DESC'
+  ) {
+    const [employees, total] = await this.employeeRepository.findAndCount({
+      relations: include ? ['department'] : [],
+      order: { [sort]: order },
+      skip: (page - 1) * limit,
+      take: limit,
     });
-    return employees;
+    return {
+      employees,
+      limit,
+      total: Math.ceil(total/limit),
+      page,
+    };
   }
+
 
   async findOne(id: number) {
     const employeeExist = await this.employeeRepository.findOne({

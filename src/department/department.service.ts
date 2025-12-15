@@ -1,26 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
+import { Department } from './entities/department.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class DepartmentService {
-  create(createDepartmentDto: CreateDepartmentDto) {
-    return 'This action adds a new department';
+  constructor(
+    @InjectRepository(Department)
+    private readonly departmentRepository: Repository<Department>,
+  ) {}
+
+  async findAll() {
+    return await this.departmentRepository.find();
   }
 
-  findAll() {
-    return `This action returns all department`;
+  async findAllEmployees(id : number) {
+    const departmentExist = await this.departmentRepository.findOne({where: {id}});
+
+    if(!departmentExist){
+      throw new NotFoundException("Department not exist");
+    }
+    const result = await this.departmentRepository.findOne({
+      where: {id},
+      relations : ['employees']
+    });
+
+    return result.employees;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} department`;
-  }
-
-  update(id: number, updateDepartmentDto: UpdateDepartmentDto) {
-    return `This action updates a #${id} department`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} department`;
-  }
 }

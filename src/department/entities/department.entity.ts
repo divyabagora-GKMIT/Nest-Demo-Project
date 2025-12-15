@@ -5,9 +5,11 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Employee } from '../../employee/entities/employee.entity';
 import { Exclude } from 'class-transformer';
+import { Length } from 'class-validator';
 
 @Entity()
 export class Department {
@@ -17,6 +19,7 @@ export class Department {
   @Column({
     nullable: false,
     unique: true,
+    length: 30
   })
   name: string;
 
@@ -30,11 +33,10 @@ export class Department {
   })
   createdAt: Date;
 
-  @Column({
+  @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
-    onUpdate: 'CURRENT_TIMESTAMP',
   })
   updatedAt: Date;
 
