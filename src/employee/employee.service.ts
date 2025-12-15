@@ -101,13 +101,18 @@ export class EmployeeService {
   async update(id: number, updateEmployeeDto: UpdateEmployeeDto) {
     const employeeExist = await this.employeeRepository.findOne({
       where: { id },
+      relations: ['department']
     });
 
     if (!employeeExist) {
       throw new NotFoundException('Emplopyee not found');
-    }
+    } 
 
-    await this.employeeRepository.update(id, updateEmployeeDto);
+    if (updateEmployeeDto.departmentId){
+      employeeExist.department.id = updateEmployeeDto.departmentId
+    }
+    const mergedEmployee = this.employeeRepository.merge(employeeExist, updateEmployeeDto)
+    await this.employeeRepository.save(mergedEmployee);
     return;
   }
 

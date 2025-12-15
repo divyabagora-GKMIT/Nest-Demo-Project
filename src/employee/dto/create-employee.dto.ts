@@ -29,8 +29,8 @@ export class CreateEmployeeDto {
   salary: number;
 
   @IsOptional()
-  // @Min(1, { message: 'departmentId must be at least 1' })
-  // @Max(4, { message: 'departmentId cannot be more than 4' })
+  @Min(1, { message: 'departmentId must be at least 1' })
+  @Max(4, { message: 'departmentId cannot be more than 4' })
   @IsNumber({}, { message: 'departmentId must be a number' })
   departmentId: number;
 }
