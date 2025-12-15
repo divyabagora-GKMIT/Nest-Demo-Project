@@ -82,37 +82,20 @@ export class EmployeeService {
     return employeeExist;
   }
 
-  async findAllEmployees(id: number) {
-    const departmentExist = await this.departmentRepository.findOne({
-      where: { id },
-    });
-
-    if (!departmentExist) {
-      throw new NotFoundException('Department not exist');
-    }
-
-    const employees = await this.employeeRepository.find({
-      where: { department: { id: id } },
-    });
-
-    return employees;
-  }
-
   async update(id: number, updateEmployeeDto: UpdateEmployeeDto) {
     const employeeExist = await this.employeeRepository.findOne({
       where: { id },
-      relations: ['department']
     });
 
     if (!employeeExist) {
       throw new NotFoundException('Emplopyee not found');
-    } 
-
-    if (updateEmployeeDto.departmentId){
-      employeeExist.department.id = updateEmployeeDto.departmentId
     }
-    const mergedEmployee = this.employeeRepository.merge(employeeExist, updateEmployeeDto)
-    await this.employeeRepository.save(mergedEmployee);
+
+    const updatedEmployee = this.employeeRepository.merge(
+      employeeExist,
+      updateEmployeeDto,
+    );
+    await this.employeeRepository.save(updatedEmployee);
     return;
   }
 
@@ -120,7 +103,6 @@ export class EmployeeService {
     const employeeExist = await this.employeeRepository.findOne({
       where: { id },
     });
-    console.log(employeeExist);
 
     if (!employeeExist) {
       throw new NotFoundException('Emplopyee not found');
