@@ -8,6 +8,9 @@ import { NotFoundException } from '@nestjs/common';
 const mockEmployeeRepository = {
   findOne: jest.fn(),
   findAndCount: jest.fn(),
+  merge: jest.fn(),
+  save: jest.fn(),
+  softDelete: jest.fn(),
 };
 const mockDepartmentRepository = {
   find: jest.fn(),
@@ -113,6 +116,35 @@ describe('EmployeeService', () => {
         limit: 5,
         total: 2,
         page: 2,
+      });
+    });
+
+    describe('remove', () => {
+      it('should soft delete employee successfully', async () => {
+        const existingEmployee = { id: 1, name: 'John' };
+
+        mockEmployeeRepository.findOne.mockResolvedValue(existingEmployee);
+        mockEmployeeRepository.softDelete.mockResolvedValue({});
+
+        await service.remove(1);
+
+        expect(mockEmployeeRepository.findOne).toHaveBeenCalledWith({
+          where: { id: 1 },
+        });
+
+        expect(mockEmployeeRepository.softDelete).toHaveBeenCalledWith(1);
+      });
+
+      it('should throw NotFoundException if employee not found', async () => {
+        mockEmployeeRepository.findOne.mockResolvedValue(null);
+
+        const result = service.remove(1);
+
+        await expect(result).rejects.toThrow(NotFoundException);
+
+        expect(mockEmployeeRepository.findOne).toHaveBeenCalledWith({
+          where: { id: 1 },
+        });
       });
     });
   });
