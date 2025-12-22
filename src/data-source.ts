@@ -12,6 +12,6 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_NAME || 'nestdb',
   logging: false,
   entities: [__dirname + '/**/*.entity.{ts, js}'],
-  migrations: [__dirname + '/migrations/*.{ts, js}'],
+  migrations: [__dirname + '/database/migrations/*.{ts, js}'],
   synchronize: false,
 });

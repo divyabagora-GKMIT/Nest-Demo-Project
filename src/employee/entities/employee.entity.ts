@@ -12,7 +12,7 @@ import {
 import { Department } from '../../department/entities/department.entity';
 import { Exclude } from 'class-transformer';
 
-@Entity()
+@Entity('employees')
 @Unique(['email', 'deletedAt'])
 @Check(`"salary" >= 0`)
 export class Employee {

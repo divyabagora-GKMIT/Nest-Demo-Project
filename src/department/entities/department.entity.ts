@@ -11,7 +11,7 @@ import { Employee } from '../../employee/entities/employee.entity';
 import { Exclude } from 'class-transformer';
 import { Length } from 'class-validator';
 
-@Entity()
+@Entity('departments')
 export class Department {
   @PrimaryGeneratedColumn()
   id: number;
